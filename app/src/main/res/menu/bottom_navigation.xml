@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_nav_rulers"
+        android:title="@string/Rulers"
+        android:icon="@drawable/ic_rulers"/>
+    <item
+        android:id="@+id/bottom_nav_events"
+        android:title="@string/Events"
+        android:icon="@drawable/ic_battles"/>
+    <item
+        android:id="@+id/bottom_nav_battles"
+        android:title="@string/Battles"
+        android:icon="@drawable/ic_test_icon"/>
+    <item
+        android:id="@+id/bottom_nav_builds"
+        android:title="@string/Builds"
+        android:icon="@drawable/ic_battles"
+        />
+    <item
+        android:id="@+id/bottom_nav_favorites"
+        android:title="@string/Favorites"
+        android:icon="@drawable/ic_battles"/>
+
+</menu>

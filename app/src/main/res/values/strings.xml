@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Russian history</string>
+    <string name="Rulers">Правители</string>
+    <string name="Events">События</string>
+    <string name="Builds">Строения</string>
+    <string name="Battles">Сражения</string>
+    <string name="Favorites">Избранное</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Favs_empty_tip">Ваш список избранного пуст.\n\n Для того, чтобы его пополнить, проведите долгое нажатие на интересующий Вас элемент.</string>
+    <string name="action_add_to_favs">Добавить в избранное</string>
+    <string name="action_remove_fron_favs">Удалить из избранного</string>
+</resources>

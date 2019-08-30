@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0288D1</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#FFF</color>
+    <color name="colorWhite">#FFF</color>
+    <color name="colorGrey">#212F3D</color>
+    <color name="colorBlack">#000</color>
+    <color name="colorRulers">#0288D1</color>
+    <color name="colorEvents">#388E3C</color>
+    <color name="colorBattles">#D32F2F</color>
+    <color name="colorBuilds">#FBC02D</color>
+</resources>
