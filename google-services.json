@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "241564270997",
+    "firebase_url": "https://historyofrussia-3869c.firebaseio.com",
+    "project_id": "historyofrussia-3869c",
+    "storage_bucket": "historyofrussia-3869c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241564270997:android:1746f1dd1e44a399",
+        "android_client_info": {
+          "package_name": "com.mnicholas.history"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241564270997-oe7p0oqqo80tomlm1bkb3ldf1he6lcne.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mnicholas.history",
+            "certificate_hash": "9a6bf805ff50f815322061e042b68c0bf4571329"
+          }
+        },
+        {
+          "client_id": "241564270997-g0df246unqn9hvjvce6e6oprjkhj1l0r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh6RG9SB1-0d0rvY_tI4Sb9-C0b880q3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241564270997-g0df246unqn9hvjvce6e6oprjkhj1l0r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

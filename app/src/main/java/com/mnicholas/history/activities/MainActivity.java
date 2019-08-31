@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.animation.Animation;
 import android.view.inputmethod.EditorInfo;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -95,6 +94,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, fragment);
         ft.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem item = menu.getItem(FRAGMENT_CURRENT);
+        item.setChecked(true);
     }
 
     @Override

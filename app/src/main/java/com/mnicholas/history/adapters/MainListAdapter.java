@@ -2,6 +2,7 @@ package com.mnicholas.history.adapters;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -16,7 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.mnicholas.history.R;
+import com.mnicholas.history.activities.ContentActivity;
+import com.mnicholas.history.activities.MainActivity;
 import com.mnicholas.history.fragments.FavoritesFragment;
 import com.mnicholas.history.models.HeaderItem;
 import com.mnicholas.history.models.ListItem;
@@ -26,8 +32,10 @@ import com.mnicholas.history.providers.JsonAssetsProvider;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHolder> implements Filterable {
 
@@ -35,14 +43,18 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
 
     private Context mContext;
 
-    private ArrayList<MyItem> items;
-    private ArrayList<MyItem> itemsFull;
+    private ArrayList<MyItem> items; // Текущее состояние
+    private ArrayList<MyItem> itemsFull; // Полный список
+    // Реклама
+    private InterstitialAd mInterstitialAd;
+    private AdRequest mAdRequest;
+    // Избранное
     private DBHelper databaseHelper;
-
     private boolean isFav = false;
 
     public MainListAdapter(Context context, int listType) {
         mContext = context;
+        initAd();
         databaseHelper = new DBHelper(mContext);
         try {
             items = JsonAssetsProvider.fillItemsList(mContext, listType);
@@ -54,8 +66,10 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
             e.printStackTrace();
         }
     }
+    // Конструктор для работы с избранным
     public MainListAdapter(Context context){
         mContext = context;
+        initAd();
         isFav = true;
         databaseHelper = new DBHelper(mContext);
         items = setFavoritesItems();
@@ -216,7 +230,11 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(mContext, "Вы кликнули на элемент: " + position + " с ID " + id, Toast.LENGTH_LONG).show();
+           if(mInterstitialAd.isLoaded() || mInterstitialAd.isLoading())
+               mInterstitialAd.show();
+           else{
+               mContext.startActivity(new Intent(mContext, ContentActivity.class));
+           }
         }
 
         @Override
@@ -237,8 +255,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
                 for(MyItem i : items){
                     ListItem j = (ListItem) i;
                     if(j.getId() == id) {
+                        notifyItemRemoved(items.indexOf(i));
                         items.remove(i);
-                        notifyDataSetChanged();
                         if(!FavoritesFragment.haveFavs(mContext))
                             FavoritesFragment.switchViews(1);
                         break;
@@ -317,5 +335,19 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
 
     interface ViewHolderBehaviour {
         void bind(int elementPosition);
+    }
+
+    private void initAd(){
+        mAdRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        mInterstitialAd = new InterstitialAd(mContext);
+        mInterstitialAd.setAdUnitId(mContext.getResources().getString(R.string.adUnitId));
+        mInterstitialAd.loadAd(mAdRequest);
+        mInterstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                mContext.startActivity(new Intent(mContext, ContentActivity.class));
+            }
+        });
     }
 }
