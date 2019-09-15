@@ -16,14 +16,14 @@
         android:textAlignment="center"
         android:visibility="visible"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/lite"
         android:layout_marginHorizontal="@dimen/small"
         android:visibility="visible">
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </FrameLayout>

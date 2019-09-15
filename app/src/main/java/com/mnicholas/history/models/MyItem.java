@@ -1,8 +1,10 @@
 package com.mnicholas.history.models;
 
-public abstract class MyItem {
-    private String mTitle;
-    private int isHeader = 0;
+import android.os.Parcelable;
+
+public abstract class MyItem implements Parcelable {
+    protected String mTitle;
+    protected int isHeader = 0;
 
     public MyItem(String title){
         mTitle = title;

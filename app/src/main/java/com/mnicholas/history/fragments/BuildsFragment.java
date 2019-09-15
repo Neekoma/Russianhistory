@@ -2,9 +2,9 @@ package com.mnicholas.history.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +15,9 @@ import com.mnicholas.history.adapters.MainListAdapter;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class BuildsFragment extends Fragment {
+    private static BuildsFragment mInstance;
     private static final int LIST_TYPE = 3;
     private Context mContext;
     private RecyclerView buildsList;
@@ -25,8 +25,9 @@ public class BuildsFragment extends Fragment {
     public BuildsFragment() {}
 
     public static BuildsFragment newInstance() throws IOException, JSONException {
-        BuildsFragment fragment = new BuildsFragment();
-        return fragment;
+        if(mInstance == null)
+            mInstance = new BuildsFragment();
+        return mInstance;
     }
 
     public RecyclerView getBuildsList(){return buildsList;}

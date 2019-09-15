@@ -11,7 +11,7 @@
     <string name="Favs_empty_tip">Ваш список избранного пуст.\n\n Для того, чтобы его пополнить, проведите долгое нажатие на интересующий Вас элемент.</string>
     <string name="action_add_to_favs">Добавить в избранное</string>
     <string name="action_remove_fron_favs">Удалить из избранного</string>
-    <string name="adUnitId">ca-app-pub-9164668102550909/7652137461</string>
+    <string name="adUnitId">ca-app-pub-3940256099942544/1033173712</string>
 
 
     <string name="title_activity_content">ContentActivity</string>

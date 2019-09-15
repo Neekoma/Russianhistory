@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".fragments.EventsFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/eventsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/lite"
         android:layout_marginHorizontal="@dimen/small">
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </FrameLayout>

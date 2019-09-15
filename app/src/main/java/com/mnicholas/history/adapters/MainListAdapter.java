@@ -5,9 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.mnicholas.history.R;
 import com.mnicholas.history.activities.ContentActivity;
-import com.mnicholas.history.activities.MainActivity;
 import com.mnicholas.history.fragments.FavoritesFragment;
+import com.mnicholas.history.helpers.AdHelper;
 import com.mnicholas.history.models.HeaderItem;
 import com.mnicholas.history.models.ListItem;
 import com.mnicholas.history.models.MyItem;
@@ -32,10 +29,7 @@ import com.mnicholas.history.providers.JsonAssetsProvider;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHolder> implements Filterable {
 
@@ -45,16 +39,13 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
 
     private ArrayList<MyItem> items; // Текущее состояние
     private ArrayList<MyItem> itemsFull; // Полный список
-    // Реклама
-    private InterstitialAd mInterstitialAd;
-    private AdRequest mAdRequest;
+    //Реклама
     // Избранное
     private DBHelper databaseHelper;
     private boolean isFav = false;
 
     public MainListAdapter(Context context, int listType) {
         mContext = context;
-        initAd();
         databaseHelper = new DBHelper(mContext);
         try {
             items = JsonAssetsProvider.fillItemsList(mContext, listType);
@@ -69,10 +60,21 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
     // Конструктор для работы с избранным
     public MainListAdapter(Context context){
         mContext = context;
-        initAd();
         isFav = true;
         databaseHelper = new DBHelper(mContext);
         items = setFavoritesItems();
+        itemsFull = new ArrayList<MyItem>();
+        itemsFull.addAll(items);
+    }
+
+    public ArrayList<MyItem> getItems(){return items;}
+    public void setItems(ArrayList<MyItem> i){
+        if(items != null)
+            items.clear();
+        else
+            items = new ArrayList<>();
+        items.addAll(i);
+
     }
 
     @Override
@@ -136,10 +138,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
             else{
                 String format = constraint.toString().toLowerCase();
                 for(MyItem item : itemsFull){
-                    if(item.getIsHeader() == 0 && item.getTitle().toLowerCase().contains(format)) {
-                        Log.d(TAG, "performFiltering: Добавлен " + item.getTitle());
+                    if(item.getIsHeader() == 0 && item.getTitle().toLowerCase().startsWith(format))
                         filteredItems.add(item);
-                    }
                 }
             }
             FilterResults results = new FilterResults();
@@ -230,11 +230,20 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
 
         @Override
         public void onClick(View v) {
-           if(mInterstitialAd.isLoaded() || mInterstitialAd.isLoading())
-               mInterstitialAd.show();
-           else{
-               mContext.startActivity(new Intent(mContext, ContentActivity.class));
+            final Intent intent = new Intent(mContext, ContentActivity.class);
+            intent.putExtra("URL", "file:///android_asset/index.html");
+            intent.putExtra("TITLE", itemTitle.getText());
+           if(AdHelper.getAd().isLoaded()) {
+               AdHelper.getAd().setAdListener(new AdListener(){
+                   @Override
+                   public void onAdClosed() {
+                       mContext.startActivity(intent);
+                   }
+               });
+               AdHelper.getAd().show();
            }
+           else
+               mContext.startActivity(intent);
         }
 
         @Override
@@ -337,17 +346,4 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
         void bind(int elementPosition);
     }
 
-    private void initAd(){
-        mAdRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        mInterstitialAd = new InterstitialAd(mContext);
-        mInterstitialAd.setAdUnitId(mContext.getResources().getString(R.string.adUnitId));
-        mInterstitialAd.loadAd(mAdRequest);
-        mInterstitialAd.setAdListener(new AdListener(){
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                mContext.startActivity(new Intent(mContext, ContentActivity.class));
-            }
-        });
-    }
 }

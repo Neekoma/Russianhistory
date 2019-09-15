@@ -1,6 +1,7 @@
 package com.mnicholas.history.models;
 
 import android.content.Context;
+import android.os.Parcel;
 
 public class ListItem extends MyItem{
     private String mInfo;
@@ -20,4 +21,19 @@ public class ListItem extends MyItem{
     public int getId(){return mId;}
     public void setInfo(String info){ mInfo = info; }
     public String getInfo(){return mInfo;}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mTitle);
+        dest.writeString(mInfo);
+        dest.writeInt(mId);
+        dest.writeInt(isHeader);
+        dest.writeString(mHtmlDoc);
+        dest.writeInt(mType);
+    }
 }

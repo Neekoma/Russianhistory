@@ -1,16 +1,15 @@
 package com.mnicholas.history.activities;
 
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.text.InputType;
-import android.util.Log;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +23,7 @@ import com.mnicholas.history.fragments.BuildsFragment;
 import com.mnicholas.history.fragments.EventsFragment;
 import com.mnicholas.history.fragments.FavoritesFragment;
 import com.mnicholas.history.fragments.RulersFragment;
+import com.mnicholas.history.helpers.AdHelper;
 import com.mnicholas.history.helpers.BottomNavigationHelper;
 
 import org.json.JSONException;
@@ -64,8 +64,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d(TAG, "onCreate: " + FRAGMENT_CURRENT);
         getWindow().setNavigationBarColor(getResources().getColor(R.color.colorGrey));
+        if(AdHelper.getAd() == null)
+            AdHelper.initAd(this);
     }
 
     private void loadFragment() throws IOException, JSONException {
@@ -182,6 +183,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 adapter.getFilter().filter(s);
                 return true;
             case FRAGMENT_FAVORITES:
+                currentFragment = (FavoritesFragment) fragment;
+                list = ((FavoritesFragment) currentFragment).getFavsList();
+                adapter = (MainListAdapter) list.getAdapter();
+                adapter.getFilter().filter(s);
                 return true;
         }
         return false;
